@@ -1,9 +1,9 @@
 from app import app, wikidata
-from flask import jsonify
+from flask import jsonify, render_template
 
 @app.route("/")
 def index():
-  return instance_of('Q33506', 'Q60', 'geojson')
+  return map()
 
 @app.route("/instance/<instance>/<location>", defaults={'format':'json'})
 @app.route("/instance/<instance>/<location>.<format>")
@@ -15,3 +15,11 @@ def instance_of(instance, location, format):
     data = client.items_located_in(instance, location)
 
   return jsonify(data)
+
+@app.route("/map")
+def map():
+  return render_template(
+        'map.html',
+        title="Wikidata Query Map",
+        description="Wikidata Query Map"
+    )
